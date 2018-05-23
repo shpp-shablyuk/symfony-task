@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Issue{% endblock %}
+
+{% block body %}
+
+    <h1>Issue</h1>
+    {% if issue %}
+        <div class="row mb-4">
+            <div class="col">
+                <ul class="list-group">
+                    {% if issue.subject is defined %}
+                        <li class="list-group-item"><b>Subject</b>: {{ issue.subject }}</li>
+                    {% endif %}
+                    {% if issue.description is defined %}
+                        <li class="list-group-item"><b>Description</b>: {{ issue.description }}</li>
+                    {% endif %}
+                    {% if issue.project.name is defined %}
+                        <li class="list-group-item">
+
+                            <b>Project</b>: <a href="{{ path('project_issues', {'project_id':issue.project.id}) }}" >{{ issue.project.name }}</a>
+                        </li>
+                    {% endif %}
+                    {% if issue.tracker.name is defined %}
+                        <li class="list-group-item"><b>Tracker</b>: {{ issue.tracker.name }}</li>
+                    {% endif %}
+                    {% if issue.status.name is defined %}
+                        <li class="list-group-item"><b>Status</b>: {{ issue.status.name }}</li>
+                    {% endif %}
+                    {% if issue.priority.name is defined %}
+                        <li class="list-group-item"><b>Priority</b>: {{ issue.priority.name }}</li>
+                    {% endif %}
+                    {% if issue.author.name is defined %}
+                        <li class="list-group-item"><b>Author</b>: {{ issue.author.name }}</li>
+                    {% endif %}
+                    {% if issue.assigned_to.name is defined %}
+                        <li class="list-group-item"><b>Assigned to</b>: {{ issue.assigned_to.name }}</li>
+                    {% endif %}
+                    {% if issue.start_date is defined %}
+                        <li class="list-group-item"><b>Start date</b>: {{ issue.start_date|date("d M Y") }}</li>
+                    {% endif %}
+                    <li class="list-group-item">
+                        <b>Due date</b>: {{ issue.due_date is defined ? issue.due_date|date("m/d/Y") : "-" }}
+                    </li>
+                    <li class="list-group-item">
+                        <b>Estimated hours</b>: {{ issue.estimated_hours is defined ? issue.estimated_hours|number_format('1', '.') : "-" }}
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <b>Spent hours</b>: {{ issue.spent_hours is defined ? issue.spent_hours|number_format : "-" }}
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a class="btn btn-outline-primary" data-toggle="collapse"
+                                   href="#collapseHours" role="button" aria-expanded="false" aria-controls="collapseHours">
+                                    Add Hours
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseHours" class="row collapse mt-3">
+                            <div class="col">
+                                {{ form_start(form_spend_hours) }}
+                                {{ form_widget(form_spend_hours) }}
+                                <div class="form-group row">
+                                    <div class="col-xs-12 col-md-10 offset-sm-2">
+                                        <button type="submit" class="btn btn-primary">Save Hours</button>
+                                    </div>
+                                </div>
+                                {{ form_end(form_spend_hours) }}
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card bg-light issue-comment-add">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div id="collapseComment" class="collapse">
+                                    {{ form_start(form_comments) }}
+                                    {{ form_widget(form_comments) }}
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-10 offset-sm-2">
+                                            <button type="submit" class="btn btn-primary">Save Comments</button>
+                                        </div>
+                                    </div>
+                                    {{ form_end(form_comments) }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-outline-primary float-right" data-toggle="collapse" href="#collapseComment" role="button" aria-expanded="false" aria-controls="collapseComment">
+                                    Add Comments
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if comments %}
+        <div class="row mb-4">
+            <div class="col">
+                <h3>Comments ({{ comments|length }}):</h3>
+                <ul class="list-group">
+                {% for comment in comments %}
+                    <div>
+                        <li class="list-group-item">{{ loop.length - loop.index0 }}. {{ comment.comments }}</li>
+                    </div>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+    {% else %}
+        <p>The issue did't found</p>
+    {% endif %}
+
+    <div class="row mb-4">
+        <div class="col">
+            <a href="{{ path('project_issues', {'project_id':issue.project.id}) }}" class="btn btn-outline-info">
+                Back
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

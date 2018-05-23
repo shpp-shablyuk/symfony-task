@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Issues{% endblock %}
+
+{% block body %}
+    <h1>Issues</h1>
+
+    {% if issues %}
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Project</th>
+                    <th scope="col">Tracker</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">estimated</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for issue in issues %}
+                <tr>
+                    <th scope="row">
+                        {{ issue.id }}
+                    </th>
+                    <td>
+                        {% if issue.subject is defined %}
+                            {{ issue.subject }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.project.name is defined %}
+                            {{ issue.project.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.tracker.name is defined %}
+                            {{ issue.tracker.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.status.name is defined %}
+                            {{ issue.status.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.priority.name is defined %}
+                            {{ issue.priority.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.author.name is defined %}
+                            {{ issue.author.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.assigned_to.name is defined %}
+                            {{ issue.assigned_to.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if issue.estimated_hours is defined %}
+                            {{ issue.estimated_hours }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('issue', {'id':issue.id}) }}" class="btn btn-info">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {%  else %}
+        <p>Issues did't found</p>
+    {%  endif %}
+
+    <div class="row">
+        <div class="col">
+            <a href="{{ path('projects') }}" class="btn btn-outline-info">
+                Back
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+
+

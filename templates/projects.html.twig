@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Projects{% endblock %}
+
+{% block body %}
+
+    <h1>Projects</h1>
+
+    {% if projects %}
+    <div class="row">
+        <div class="col">
+            <div class="list-group">
+                {% for project in projects %}
+                    <a href="{{ path('project_issues', {'project_id':project.identifier}) }}" class="list-group-item list-group-item-action">{{ project.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <p>Projects did't found</p>
+    {% endif %}
+
+{% endblock %}
+
+
+
